@@ -1,0 +1,272 @@
+openapi: 3.0.0
+info:
+  title: API pour Onboarding Étudiant
+  description: API pour gérer des étudiants lors de l'onboarding
+  version: "1.2"
+servers:
+    - url: https://API/Onboarding/students.editor.io
+
+paths:
+  /etudiant/inscription:
+    post:
+      summary: Inscrire un nouvel étudiant
+      tags:
+        - Étudiant
+      requestBody:
+        description: Détails d'inscription de l'étudiant
+        required: true
+        content:
+          application/json:
+            example:
+              id: 12345
+              nom: Mia jamie
+              email: jamia@gmail.com
+              programme: Informatique
+      responses:
+        '200':
+          description: Inscription réussie
+          content:
+            application/json:
+              example:
+                idInscription: 54321
+                message: Inscription effectuée avec succès
+        '400':
+          description: Entrée invalide
+
+  /etudiant/orientation:
+    get:
+      summary: Accéder aux documents d'orientation pour les étudiants
+      tags:
+        - Étudiant
+      responses:
+        '200':
+          description: Réponse réussie
+          content:
+            application/json:
+              example:
+                messageBienvenue: Bienvenue sur le campus virtuel !
+                liens:
+                  - titre: Guide de l'étudiant
+                    url: https://exemple.com/guide-etudiant.pdf
+                  - titre: Calendrier universitaire
+                    url: https://exemple.com/calendrier.pdf
+        '404':
+          description: Documents d'orientation non trouvés
+
+  /etudiant/selection-cours:
+    post:
+      summary: Sélectionner des cours pour le semestre
+      tags:
+        - Étudiant
+      requestBody:
+        description: Cours sélectionnés pour le semestre
+        required: true
+        content:
+          application/json:
+            example:
+              id: 54321
+              semestre: Automne 2023
+              coursSelectionnes:
+                - Mathématiques
+                - Informatique
+      responses:
+        '200':
+          description: Sélection de cours réussie
+          content:
+            application/json:
+              example:
+                idConfirmation: 98765
+                message: Cours sélectionnés avec succès
+        '400':
+          description: Sélection de cours invalide
+  /etudiant/inscription/{id}:
+    put:
+      summary: Mettre à jour les détails d'inscription d'un étudiant
+      tags:
+        - Étudiant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID de l'étudiant
+      requestBody:
+        description: Nouveaux détails d'inscription de l'étudiant
+        required: true
+        content:
+          application/json:
+            example:
+              nom: Mia Jamie Smith
+              email: mia.smith@gmail.com
+              programme: Génie Logiciel
+      responses:
+        '200':
+          description: Mise à jour réussie
+          content:
+            application/json:
+              example:
+                message: Détails d'inscription mis à jour avec succès
+        '400':
+          description: Entrée invalide
+        '404':
+          description: Étudiant non trouvé
+
+    delete:
+      summary: Supprimer l'inscription d'un étudiant
+      tags:
+        - Étudiant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID de l'étudiant
+      responses:
+        '200':
+          description: Suppression réussie
+          content:
+            application/json:
+              example:
+                message: Inscription de l'étudiant supprimée avec succès
+        '404':
+          description: Étudiant non trouvé
+
+  /teachers:
+    get:
+      summary: Récupérer la liste des enseignants
+      tags:
+        - Enseignant
+      responses:
+        '200':
+          description: Réponse réussie
+          content:
+            application/json:
+              example:
+                enseignants:
+                  - nom: RAMAROZAKA 
+                    prenom: Tokimahery
+                    coursEnseignes:
+                      - Web1
+                      - Prog1
+                      - Donnée1
+                      - Prog2
+                  - nom: RAMAROSON 
+                    prenom: Sandrine
+                    coursEnseignes:
+                      - MGT1
+        '404':
+          description: Enseignants non trouvés
+
+    post:
+      summary: Ajouter un nouvel enseignant
+      tags:
+        - Enseignant
+      requestBody:
+        description: Détails de l'enseignant à ajouter
+        required: true
+        content:
+          application/json:
+            example:
+              nom: Dupont
+              prenom: Marie
+              coursEnseignes:
+                - Mathématiques
+                - Physique
+      responses:
+        '201':
+          description: Enseignant ajouté avec succès
+          content:
+            application/json:
+              example:
+                message: Enseignant ajouté avec succès
+        '400':
+          description: Requête invalide
+
+  /teachers/{id}:
+    get:
+      summary: Récupérer les détails d'un enseignant
+      tags:
+        - Enseignant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID de l'enseignant
+      responses:
+        '200':
+          description: Réponse réussie
+          content:
+            application/json:
+              example:
+                nom: Dupont
+                prenom: Marie
+                coursEnseignes:
+                  - Mathématiques
+                  - Physique
+        '404':
+          description: Enseignant non trouvé
+
+    put:
+      summary: Mettre à jour les détails d'un enseignant
+      tags:
+        - Enseignant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID de l'enseignant
+      requestBody:
+        description: Nouveaux détails de l'enseignant
+        required: true
+        content:
+          application/json:
+            example:
+              nom: Dupont
+              prenom: Marie
+              coursEnseignes:
+                - Mathématiques
+                - Chimie
+      responses:
+        '200':
+          description: Mise à jour réussie
+          content:
+            application/json:
+              example:
+                message: Détails de l'enseignant mis à jour avec succès
+        '400':
+          description: Requête invalide
+        '404':
+          description: Enseignant non trouvé
+
+    delete:
+      summary: Supprimer un enseignant
+      tags:
+        - Enseignant
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID de l'enseignant
+      responses:
+        '200':
+          description: Suppression réussie
+          content:
+            application/json:
+              example:
+                message: Enseignant supprimé avec succès
+        '404':
+          description: Enseignant non trouvé                
+
+tags:
+  - name: Étudiant
+    description: Opérations liées aux étudiants
+  - name: Enseignant
+    description: Opérations liées aux enseignants
